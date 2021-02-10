@@ -10,28 +10,14 @@ Explanation: The answer is "abc", with the length of 3.
 '''
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
-        appeared_char = set()
-        length = 0
-        best = 0
-        substr = ''
-        best_substr = ''
-        for char in s:
-            if char in appeared_char:
-                if length > best:
-                    best_substr = substr
-                    best = length
-                    
-                if char in substr:
-                    substr = substr[substr.index(char)+1:] + char
-                else:
-                    substr += char
-                length = len(substr)
+        index = {}
+        i, j, longest, = 0, 0, 0
 
-            else:
-                length += 1
-                substr += char
-                appeared_char.add(char)
-        if length > best:
-            best = length
-        return best
+        # move j down the string
+        for j in range(len(s)):
+            if s[j] in index and index[s[j]] >= i:
+                i = index[s[j]] + 1
+            index[s[j]] = j
+            longest = max(longest, j-i+1)
+        return longest
             
